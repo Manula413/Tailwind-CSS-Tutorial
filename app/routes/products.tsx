@@ -17,7 +17,7 @@ export default function ProductDisplay() {
 
             <h2 className="text-2xl font-semibold text-gray-700 text-center mb-6">Today's Featured Items</h2><br />
 
-            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* Product 1 */}
                 <div className="flex flex-col items-center">
                     <div className="bg-white shadow-md rounded-xl p-3 w-full relative flex justify-center">
