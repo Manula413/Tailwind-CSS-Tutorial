@@ -1,49 +1,16 @@
-import { Link } from "@remix-run/react";
+import { json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { getProducts } from "../services/products.service"; // Adjusted import path
+
 import "../tailwind.css";
 
+// Loader function to fetch data
+export const loader = async () => {
+    const products = getProducts();
+    return json({ products });
+};
 
-//JSON Array
-const jsonData = `[
-    {
-        "id": 1,
-        "image": "/images/product_1.jpg",
-        "name": "9-in-1 Electric Pressure Cooker 6 Qt",
-        "price": "$109.99",
-        "description": "Programmable Multi-Function Cooker with Safer Vent, Olla de Presion, Rice Cooker, Slow Cooker, Steamer, Sauté, Warmer & Sterilizer, 1000W, Stainless Steel",
-        "rating": 5,
-        "reviews": 150
-    },
-    {
-        "id": 2,
-        "image": "/images/product_2.jpg",
-        "name": "Instant Pot RIO, 7-in-1 Electric Multi-Cooker",
-        "price": "$99.95",
-        "description": "Pressure Cooker, Slow Cooker, Rice Cooker, Steamer, Sauté, Yogurt Maker, & Warmer, Includes App With Over 800 Recipes, 6 Quart",
-        "rating": 4.5,
-        "reviews": 150
-    },
-    {
-        "id": 3,
-        "image": "/images/product_3.jpg",
-        "name": "Aroma Housewares Aroma 6-cup",
-        "price": "$19.95",
-        "description": "One Touch Rice Cooker, White (ARC-363NG), 6 cup cooked/ 3 cup uncook/ 1.5 Qt",
-        "rating": 4.5,
-        "reviews": 150
-    },
-    {
-        "id": 4,
-        "image": "/images/product_4.jpg",
-        "name": "Instant Pot Duo Plus 9-in-1 Electric Pressure Cooker",
-        "price": "$69.99",
-        "description": "Slow Cooker, Rice Cooker, Steamer, Sauté, Yogurt Maker, Warmer & Sterilizer, Includes App With Over 800 Recipes, Stainless Steel, 6 Quart",
-        "rating": 5,
-        "reviews": 150
-    }
-]`;
-
-const products = JSON.parse(jsonData);
-
+// ProductCard component
 const ProductCard = ({ product }) => {
     const fullStars = Math.floor(product.rating);
     const halfStar = product.rating % 1 !== 0;
@@ -92,9 +59,11 @@ const ProductCard = ({ product }) => {
 };
 
 export default function ProductDisplay() {
+    const { products } = useLoaderData(); // Get products from loader
+
     return (
         <main className="p-8 bg-white">
-            <h2 className="text-2xl font-semibold text-gray-700 text-center mb-6">Today's Featured Brands</h2><br/>
+            <h2 className="text-2xl font-semibold text-gray-700 text-center mb-6">Today's Featured Brands</h2><br />
             <div className="flex flex-wrap justify-center space-x-6 mb-8">
                 <img className="h-10" src="/images/logo_1.png" alt="Haier" />
                 <img className="h-10" src="/images/logo_2.png" alt="Whirlpool" />
@@ -102,12 +71,12 @@ export default function ProductDisplay() {
                 <img className="h-10" src="/images/logo_4.png" alt="Electrolux" />
                 <img className="h-10" src="/images/logo_5.png" alt="LG" />
             </div>
-            <h2 className="text-2xl font-semibold text-gray-700 text-center mb-6">Today's Featured Items</h2><br/>
+            <h2 className="text-2xl font-semibold text-gray-700 text-center mb-6">Today's Featured Items</h2><br />
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {products.map(product => (
                     <ProductCard key={product.id} product={product} />
                 ))}
-            </div><br/>
+            </div><br />
             <div className="mt-6 text-center">
                 <button className="bg-gray-900 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition duration-300">
                     View More
@@ -116,4 +85,3 @@ export default function ProductDisplay() {
         </main>
     );
 }
-
