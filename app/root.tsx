@@ -28,12 +28,7 @@ export default function Root() {
               >
                 Home
               </Link>
-              <Link
-                to="/about"
-                className="text-white hover:text-yellow-300 hover:underline transition duration-200"
-              >
-                About
-              </Link>
+          
               <Link
                 to="/products"
                 className="text-white hover:text-yellow-300 hover:underline transition duration-200"
