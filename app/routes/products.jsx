@@ -1,16 +1,15 @@
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { getProducts } from "../services/products.service"; // Adjusted import path
+import { getProducts } from "../services/products.service"; 
 
 import "../tailwind.css";
 
-// Loader function to fetch data
+
 export const loader = async () => {
     const products = getProducts();
     return json({ products });
 };
 
-// ProductCard component
 const ProductCard = ({ product }) => {
     const fullStars = Math.floor(product.rating);
     const halfStar = product.rating % 1 !== 0;
@@ -59,7 +58,7 @@ const ProductCard = ({ product }) => {
 };
 
 export default function ProductDisplay() {
-    const { products } = useLoaderData(); // Get products from loader
+    const { products } = useLoaderData(); 
 
     return (
         <main className="p-8 bg-white">
