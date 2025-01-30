@@ -6,10 +6,9 @@ import ProductCard from "../components/ProductCard"; // Importing the extracted 
 import "../tailwind.css";
 
 export const loader = async () => {
-    const products = getProducts();
+    const products = await getProducts(); // Now fetching from the database
     return json({ products });
-};
-
+}
 export default function ProductDisplay() {
     const { products } = useLoaderData();
 
