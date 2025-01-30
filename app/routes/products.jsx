@@ -1,5 +1,5 @@
 import { json } from "@remix-run/node";
-import { useLoaderData, useFetcher } from "@remix-run/react";
+import { useLoaderData, useSubmit } from "@remix-run/react";
 import { getLogos, getProducts } from "../services/products.service";
 import ProductCard from "../components/ProductCard";
 import { useState, useEffect } from "react";
@@ -13,35 +13,56 @@ export const loader = async () => {
 export const action = async ({ request }) => {
     const formData = await request.formData();
     const page = Number(formData.get("page"));
-    
-    const products = await getProducts(1, page * 4); 
+
+    const products = await getProducts(1, page * 4);
 
     return json({ products });
 };
 
 export default function ProductDisplay() {
     const { products: initialProducts, logos } = useLoaderData();
-    const fetcher = useFetcher();
+    const submit = useSubmit(); // Hook for form submission
 
     const [products, setProducts] = useState(initialProducts);
     const [page, setPage] = useState(2); // Next page to fetch
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        if (fetcher.data?.products) {
-           
-            setProducts((prevProducts) => [...prevProducts, ...fetcher.data.products]);
-            setPage((prevPage) => prevPage + 1); // Increment page after successful load
-            setIsLoading(false);
+        if (isLoading) {
+            return;
         }
-    }, [fetcher.data]);
+        if (products.length > initialProducts.length) {
+            setPage((prevPage) => prevPage + 1); // Increment page after successful load
+        }
+    }, [isLoading]);
 
     const loadMore = () => {
         setIsLoading(true);
         const formData = new FormData();
-        formData.append("page", page); 
-        fetcher.submit(formData, { method: "post" });
+        formData.append("page", page); // Send the current page number for fetching
+
+        // Use useSubmit to send the form data
+        submit(formData, { method: "post" });
     };
+
+    useEffect(() => {
+        if (!isLoading) return;
+
+        // Simulating an asynchronous fetch to update the products
+        const fetchNewProducts = async () => {
+            const response = await fetch("/your-endpoint", {
+                method: "POST",
+                body: new FormData(document.getElementById('load-more-form')),
+            });
+            const data = await response.json();
+            if (data.products) {
+                setProducts((prev) => [...prev, ...data.products]); // Append new products
+                setIsLoading(false); // Stop loading once data is received
+            }
+        };
+
+        fetchNewProducts();
+    }, [isLoading]);
 
     return (
         <main className="p-8 bg-white">
@@ -60,15 +81,17 @@ export default function ProductDisplay() {
             </div>
 
             <div className="mt-6 text-center">
-                <button
-                    onClick={loadMore}
-                    className={`bg-gray-900 text-white px-6 py-2 rounded-lg transition duration-300 ${
-                        isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-700"
-                    }`}
-                    disabled={isLoading}
-                >
-                    {isLoading ? "Loading..." : "View More"}
-                </button>
+                <form id="load-more-form">
+                    <button
+                        type="button"
+                        onClick={loadMore}
+                        className={`bg-gray-900 text-white px-6 py-2 rounded-lg transition duration-300 ${isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-700"
+                            }`}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? "Loading..." : "View More"}
+                    </button>
+                </form>
             </div>
         </main>
     );
