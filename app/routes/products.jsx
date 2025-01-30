@@ -5,7 +5,7 @@ import ProductCard from "../components/ProductCard";
 import { useState, useEffect } from "react";
 
 export const loader = async () => {
-    const products = await getProducts(1, 4);
+    const products = await getProducts(1, 4); // Default page of 1 with 4 products
     const logos = await getLogos();
     return json({ products, logos });
 };
@@ -29,8 +29,9 @@ export default function ProductDisplay() {
 
     useEffect(() => {
         if (fetcher.data?.products) {
-            setProducts(fetcher.data.products); 
-            setPage(prevPage => prevPage + 1);
+           
+            setProducts((prevProducts) => [...prevProducts, ...fetcher.data.products]);
+            setPage((prevPage) => prevPage + 1); // Increment page after successful load
             setIsLoading(false);
         }
     }, [fetcher.data]);
@@ -38,7 +39,7 @@ export default function ProductDisplay() {
     const loadMore = () => {
         setIsLoading(true);
         const formData = new FormData();
-        formData.append("page", page);
+        formData.append("page", page); 
         fetcher.submit(formData, { method: "post" });
     };
 
