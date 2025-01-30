@@ -1,10 +1,17 @@
 import React, { useState } from "react";
+import { useSubmit } from "@remix-run/react";
 
 const SimpleButtonClickUI = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const submit = useSubmit(); 
 
   const handleClick = () => {
     setIsVisible(!isVisible); 
+    const formData = new FormData();
+    formData.append("isVisible", !isVisible); 
+
+    
+    submit(formData, { method: "post" });
   };
 
   return (
