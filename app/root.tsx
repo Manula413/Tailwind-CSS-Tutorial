@@ -1,4 +1,4 @@
-import { Links, Link, Meta, Outlet, Scripts } from "@remix-run/react";
+import { Links, Link, Meta, Outlet, Scripts, LiveReload } from "@remix-run/react";
 import "./tailwind.css";
 
 
@@ -35,6 +35,12 @@ export default function Root() {
               >
                 Products
               </Link>
+              <Link
+                to="/test"
+                className="text-white hover:text-yellow-300 hover:underline transition duration-200"
+              >
+                Test
+              </Link>
 
             </nav>
           </div>
@@ -51,6 +57,7 @@ export default function Root() {
         </footer>
 
         <Scripts />
+        
       </body>
     </html>
   );
