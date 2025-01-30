@@ -18,6 +18,7 @@ model Product {
   image       String
   rating      Float
   reviews     Int
+  category    String
 }
 
 model Logo {
