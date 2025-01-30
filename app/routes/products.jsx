@@ -1,12 +1,12 @@
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { getProducts } from "../services/products.service";
-import ProductCard from "../components/ProductCard"; // Importing the extracted component
+import ProductCard from "../components/ProductCard"; 
 
 import "../tailwind.css";
 
 export const loader = async () => {
-    const products = await getProducts(); // Now fetching from the database
+    const products = await getProducts(); 
     return json({ products });
 }
 export default function ProductDisplay() {
