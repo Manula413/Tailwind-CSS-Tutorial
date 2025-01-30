@@ -19,3 +19,8 @@ model Product {
   rating      Float
   reviews     Int
 }
+
+model Logo {
+  id  Int    @id @default(autoincrement())
+  url String
+}

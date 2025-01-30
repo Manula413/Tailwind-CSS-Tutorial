@@ -5,3 +5,7 @@ const prisma = new PrismaClient();
 export const getProducts = async () => {
   return await prisma.product.findMany();
 };
+
+export const getLogos = async () => {
+    return await prisma.logo.findMany();
+};

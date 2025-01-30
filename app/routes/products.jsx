@@ -1,23 +1,29 @@
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { getProducts } from "../services/products.service";
-import ProductCard from "../components/ProductCard"; 
+import { getLogos, getProducts } from "../services/products.service";
+import ProductCard from "../components/ProductCard";
 
 import "../tailwind.css";
 
 export const loader = async () => {
-    const products = await getProducts(); 
-    return json({ products });
+    const products = await getProducts();
+    const logos = await getLogos();
+    return json({ products,logos });
 }
 export default function ProductDisplay() {
-    const { products } = useLoaderData();
+    const { products, logos } = useLoaderData();
 
     return (
         <main className="p-8 bg-white">
             <h2 className="text-2xl font-semibold text-gray-700 text-center mb-6">Today's Featured Brands</h2>
             <div className="flex flex-wrap justify-center space-x-6 mb-8">
-                {["logo_1.png", "logo_2.png", "logo_3.png", "logo_4.png", "logo_5.png"].map((logo, index) => (
-                    <img key={index} className="h-10" src={`/images/${logo}`} alt={`Brand ${index + 1}`} />
+                {logos.map((logo) => (
+                    <img
+                        key={logo.id}
+                        className="h-10"
+                        src={`/images/${logo.url}`} 
+                        alt={`Brand ${logo.id}`}
+                    />
                 ))}
             </div>
             <h2 className="text-2xl font-semibold text-gray-700 text-center mb-6">Today's Featured Items</h2>
